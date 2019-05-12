@@ -10,6 +10,8 @@
  */
 public class guii extends javax.swing.JFrame {
 
+  
+
     /**
      * Creates new form guii
      */
@@ -103,15 +105,16 @@ public class guii extends javax.swing.JFrame {
                                     .addComponent(inputa)
                                     .addComponent(inputn)
                                     .addComponent(nilaifx, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelsyarat, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(tombolhitung)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                                    .addComponent(tombolreset))
-                                .addComponent(labelsoal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tombolhitung)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                                .addComponent(tombolreset))
+                            .addComponent(labelsoal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelsyarat, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -166,6 +169,25 @@ public class guii extends javax.swing.JFrame {
                 inputn.setText("");
                 nilaifx.setText("");
                 break;
+                
+            case 2:
+                labelsoal.setText("cosh(-6x)");
+                labelsyarat.setText("Syarat: a bil real, n bil bulat positif, x bil real");
+                inputa.setText("");
+                inputx.setText("");
+                inputn.setText("");
+                nilaifx.setText("");
+                break;
+                
+            case 3:
+                labelsoal.setText("x / (1-x)");
+                labelsyarat.setText("Syarat: a bil real, n bil bulat positif, -1 < x < 1 ");
+                inputa.setText("");
+                inputx.setText("");
+                inputn.setText("");
+                nilaifx.setText("");
+                break;
+                
         }
     }//GEN-LAST:event_pilihsoal
 
@@ -180,6 +202,14 @@ public class guii extends javax.swing.JFrame {
             
             case 1:
                 nilaifx.setText(String.valueOf(HasilSoal1(a, n, x)));
+                break;
+                
+            case 2:
+                nilaifx.setText(String.valueOf(HasilSoal2(a, n, x)));
+                break;
+                
+            case 3:
+                nilaifx.setText(String.valueOf(HasilSoal3(a, n, x)));
                 break;
         }
     }//GEN-LAST:event_hitung
@@ -210,14 +240,46 @@ public class guii extends javax.swing.JFrame {
         return Output;
     
     }
-    
-    //buatan Cindy
-     public static double Hasil1(double a, double n, double x){
-        double f =(Math.pow(-1,n)*Math.pow(x-a, n))/(n*Math.pow(a,n));
-        return f;
-    
+
+    public static double HasilSoal2(double a, double n, double x){
+        double[] f = new double[10001];
+        f[0] = (Math.exp(6*a)+Math.exp(-6*a))/2;
+        double Fungsi=0;
+        double es = 0.5 * Math.pow(10, 2-n);
+        for(int i=1; i<=10000; i++){
+            if(a==0){
+                f[i]=f[i-1] + Math.pow(6*x,2*i)/faktorial(2*i);
+            }else{
+                f[i]=f[i-1] + (( Math.exp(6*a) + Math.pow(-1,i)*Math.exp(-6*a))*(Math.pow(6,i)*Math.pow(x-a,i)))/(2*(faktorial(i)));
+            }
+            double ea = ((f[i]-f[i-1])/f[i])*100;
+            if(Math.abs(ea)<es){
+                Fungsi += f[i];
+            break;
+            }
+        }
+        double Output = Math.floor(Fungsi*10000)/10000;
+        return Output;
+        
     }
     
+    public static double HasilSoal3(double a, double n, double x) {
+        double[] f = new double[10001];
+        f[0] = a/(1-a);
+        double Fungsi=0;
+        double es = 0.5 * Math.pow(10, 2-n);
+        for(int i=1; i<=10000; i++){
+            f[i]=f[i-1]+deret(x, a, i);
+            double ea = ((f[i]-f[i-1])/f[i])*100;
+            if(Math.abs(ea)<es){
+                Fungsi += f[i];
+                System.out.println(i);
+                break;
+            }
+        }
+        double Output = Math.floor(Fungsi*10000)/10000;
+        return Output;
+    }
     /**
      * @param args the command line arguments
      */
@@ -270,4 +332,6 @@ public class guii extends javax.swing.JFrame {
     private javax.swing.JButton tombolhitung;
     private javax.swing.JButton tombolreset;
     // End of variables declaration//GEN-END:variables
+
+   
 }
